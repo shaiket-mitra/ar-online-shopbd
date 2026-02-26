@@ -1,0 +1,149 @@
+"use client";
+
+import Card from "@/components/home/Card";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { motion } from "framer-motion";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { FiTag } from "react-icons/fi";
+import { GiPriceTag } from "react-icons/gi";
+
+export default function AllDiscountedCakesPage() {
+  const { data: discountedCakes = [], isLoading } = useQuery({
+    queryKey: ["discountedCakes"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/get-all-discountedCakes");
+      return data;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
+  });
+
+  if (isLoading) return <LoadingSpinner />;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Header Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-12 text-center relative"
+      >
+        {/* Decorative elements */}
+        <div className="absolute -top-6 -left-10 w-24 h-24 bg-pink-100 rounded-full opacity-20 blur-xl"></div>
+        <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-pink-200 rounded-full opacity-15 blur-xl"></div>
+
+        {/* Main heading */}
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 relative">
+          <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">
+            Hot Discounted Cakes
+          </span>
+          <motion.span
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-pink-300 to-pink-400 rounded-full"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
+        </h1>
+
+        {/* Count badge */}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.5 }}
+          className="inline-flex items-center bg-pink-100 text-pink-600 px-4 py-2 rounded-full mt-4"
+        >
+          <FiTag className="mr-2" />
+          <span className="font-medium">
+            {discountedCakes.length} Special Offers
+          </span>
+        </motion.div>
+
+        {/* Floating price tags */}
+        <motion.div
+          className="absolute -top-8 right-10 text-pink-300 text-3xl"
+          animate={{
+            y: [0, -15, 0],
+            rotate: [0, -10, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: [0.42, 0, 0.58, 1],
+          }}
+        >
+          <GiPriceTag />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-2 left-12 text-pink-200 text-2xl"
+          animate={{
+            y: [0, -10, 0],
+            rotate: [0, 10, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: [0.42, 0, 0.58, 1],
+            delay: 1,
+          }}
+        >
+          <GiPriceTag />
+        </motion.div>
+      </motion.div>
+
+      {/* Cake Grid */}
+      {discountedCakes && discountedCakes.length > 0 ? (
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
+          {discountedCakes.map((cake: any, index: number) => (
+            <motion.div
+              key={cake._id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+              whileHover={{ y: -5 }}
+            >
+              <Card cake={cake} />
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center py-16 bg-pink-50 rounded-xl shadow-inner"
+        >
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full text-pink-500 mb-4">
+            <GiPriceTag className="w-8 h-8" />
+          </div>
+          <h3 className="text-xl font-medium text-gray-700">
+            No Discounted Cakes Available
+          </h3>
+          <p className="text-gray-500 mt-2">
+            Check back soon for special offers!
+          </p>
+        </motion.div>
+      )}
+
+      {/* Footer */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="mt-12 text-center"
+      >
+        <div className="inline-flex items-center bg-pink-100 text-pink-600 px-4 py-2 rounded-full text-sm font-medium">
+          <FiTag className="mr-2" />
+          Showing all {discountedCakes.length} discounted items
+        </div>
+      </motion.div>
+    </div>
+  );
+}
