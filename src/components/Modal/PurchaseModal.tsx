@@ -23,7 +23,7 @@ type PurchaseInfo = {
     email: string; // Guest allowed
     image?: string;
   };
-  cakeId: string;
+  productId: string;
   seller?: string;
   address: string;
   phone: string;
@@ -44,20 +44,21 @@ const bdPhoneRegex = /^01[3-9]\d{8}$/;
 const PurchaseModal = ({
   closeModal,
   isOpen,
-  cake,
+  product,
   refetch, // optional (আপনি চাইলে বাদ দিতে পারেন)
   onSuccess,
 }: {
   closeModal: () => void;
   isOpen: boolean;
-  cake: any;
+  product: any;
   refetch?: any;
   onSuccess: () => void;
 }) => {
   const queryClient = useQueryClient();
   const { sessionUser } = useAuth();
 
-  const { price, name, category, seller, quantity, _id, discount } = cake || {};
+  const { price, name, category, seller, quantity, _id, discount } =
+    product || {};
 
   // ===== Derived product price =====
   const unitPrice = useMemo(() => {
@@ -77,7 +78,7 @@ const PurchaseModal = ({
       email: "Guest",
       image: "",
     },
-    cakeId: _id,
+    productId: _id,
     seller: seller?.email,
     address: "",
     phone: "",
@@ -92,7 +93,7 @@ const PurchaseModal = ({
 
     setForm((prev) => ({
       ...prev,
-      cakeId: _id,
+      productId: _id,
       seller: seller?.email,
       createdAt: new Date().toISOString(),
       customer: {
@@ -176,13 +177,13 @@ const PurchaseModal = ({
 
       await axios.post("/api/order", orderData);
 
-      await axios.patch(`/api/update-cake-quentity/${_id}`, {
+      await axios.patch(`/api/update-product-quentity/${_id}`, {
         quantityToUpdate: totalQuantity,
         status: "decrease",
       });
 
       // ✅ UI update
-      await queryClient.invalidateQueries({ queryKey: ["cakes"] });
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
 
       // optional: যদি refetch দরকার হয়
       if (typeof refetch === "function") {
@@ -282,7 +283,9 @@ const PurchaseModal = ({
                         maxLength={11}
                       />
                       {phoneError ? (
-                        <p className="text-xs text-red-500 mt-1">{phoneError}</p>
+                        <p className="text-xs text-red-500 mt-1">
+                          {phoneError}
+                        </p>
                       ) : form.phone ? (
                         <p className="text-xs text-green-600 mt-1">
                           Phone number looks valid
@@ -380,7 +383,9 @@ const PurchaseModal = ({
 
                   {/* Order summary */}
                   <div className="rounded-xl border bg-white p-4">
-                    <h4 className="font-semibold text-gray-900">অর্ডার সামারি</h4>
+                    <h4 className="font-semibold text-gray-900">
+                      অর্ডার সামারি
+                    </h4>
 
                     <div className="mt-3 space-y-2 text-sm">
                       <div className="flex justify-between gap-4">
@@ -440,6 +445,13 @@ const PurchaseModal = ({
 
                       <div className="my-2 border-t" />
 
+                      {/* drop */}
+                      <div className="flex justify-between gap-4">
+                        <span className="text-gray-700">Payment Method</span>
+                        <span className="font-semibold text-gray-900">
+                          Cash On Delivery
+                        </span>
+                      </div>
                       <div className="flex justify-between gap-4">
                         <span className="text-gray-700">Subtotal</span>
                         <span className="font-semibold text-gray-900">

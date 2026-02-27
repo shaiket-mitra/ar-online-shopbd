@@ -29,7 +29,7 @@ const Sidebar = ({ onItemClick }: SidebarProps) => {
           className="text-2xl font-bold text-white flex items-center"
           onClick={onItemClick}
         >
-          <Image src={"/shop-logo.png"} alt="shop logo" width={200} height={200} className=" sm:w-44 w-[8rem]"></Image>
+          <Image src={"/ar_shop_logo.png"} alt="shop logo" width={200} height={200} className=" sm:w-44 w-[8rem]"></Image>
         </Link>
       </div>
 

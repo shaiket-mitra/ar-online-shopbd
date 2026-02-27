@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 
-const Card = ({ cake, refetch }: any) => {
-  const { name, description, category, price, image, _id, discount } = cake || {};
+const Card = ({ product, refetch }: any) => {
+  const { name, description, category, price, image, _id, discount } = product || {};
 
   const router = useRouter();
   const { sessionUser } = useAuth();
@@ -33,7 +33,7 @@ const Card = ({ cake, refetch }: any) => {
     >
       <div className="bg-white rounded-xl shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl border border-gray-100">
         {/* Clickable Section */}
-        <Link href={`/cake/${_id}`} className="group block">
+        <Link href={`/product/${_id}`} className="group block">
           <div className="relative overflow-hidden">
             <Image
               src={image}
@@ -59,7 +59,7 @@ const Card = ({ cake, refetch }: any) => {
               </h3>
             </div>
 
-            <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+            <p className="text-gray-600 text-sm flex-1 line-clamp-2">
               {description}
             </p>
           </div>
@@ -100,7 +100,7 @@ const Card = ({ cake, refetch }: any) => {
       {/* ✅ Purchase Modal */}
       <PurchaseModal
         refetch={refetch}
-        cake={cake}
+        product={product}
         isOpen={purchaseOpen}
         closeModal={closePurchaseModal}
         onSuccess={() => {

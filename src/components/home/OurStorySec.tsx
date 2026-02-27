@@ -20,7 +20,7 @@ export default function OurStorySec() {
             transition={{ duration: 0.8 }}
           >
             <Image 
-              src="/ChatGPT-Image.png" 
+              src="/our-story-Image.jpg" 
               alt="Our bakery story"
               fill
               className="object-cover transition-all duration-500 hover:scale-105"

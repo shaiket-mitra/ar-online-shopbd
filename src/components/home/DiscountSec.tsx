@@ -2,14 +2,14 @@ import Card from "./Card";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiTag } from "react-icons/fi";
-import ViewAllCakesCard from "./ViewAllCakesCard";
+import ViewAllProductsCard from "./ViewAllProductsCard";
 
-const DiscountSec = ({ cakes }: any) => {
-  const discountedCakes = cakes?.filter(
-    (cake: any) => cake?.discount?.isDiscounted
+const DiscountSec = ({ products }: any) => {
+  const discountedProducts = products?.filter(
+    (product: any) => product?.discount?.isDiscounted
   );
-  const discountedTenCakes = cakes
-    ?.filter((cake: any) => cake?.discount?.isDiscounted)
+  const discountedTenProducts = products
+    ?.filter((product: any) => product?.discount?.isDiscounted)
     .slice(0, 10);
 
   return (
@@ -21,7 +21,7 @@ const DiscountSec = ({ cakes }: any) => {
         viewport={{ once: true }}
         className="mb-10"
       >
-        <Link href={`/all-discountedCakes`} className="group">
+        <Link href={`/all-discountedProducts`} className="group">
           <div className="flex items-center justify-between gap-5">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
@@ -57,23 +57,23 @@ const DiscountSec = ({ cakes }: any) => {
         </Link>
       </motion.div>
 
-      {discountedCakes.length > 0 ? (
+      {discountedProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {discountedTenCakes.map((cake: any, index: number) => (
+          {discountedTenProducts.map((product: any, index: number) => (
             <motion.div
-              key={cake._id}
+              key={product._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card cake={cake} />
+              <Card product={product} />
             </motion.div>
           ))}
-          <ViewAllCakesCard
+          <ViewAllProductsCard
             category={"Discounted"}
-            quality={discountedCakes.length}
-            linkAdd="/all-discountedCakes"
+            quality={discountedProducts.length}
+            linkAdd="/all-discountedProducts"
           />
         </div>
       ) : (
@@ -99,16 +99,16 @@ const DiscountSec = ({ cakes }: any) => {
             />
           </svg>
           <h3 className="text-xl font-medium text-gray-700 mt-4">
-            No Discounted Cakes Available
+            No Discounted Products Available
           </h3>
           <p className="text-gray-500 mt-2">
             Check back later for sweet deals!
           </p>
           <Link
-            href="/cakes"
+            href="/products"
             className="mt-4 inline-block px-6 py-2 bg-pink-400 text-white rounded-lg hover:bg-pink-500 transition-colors"
           >
-            Browse All Cakes
+            Browse All Products
           </Link>
         </motion.div>
       )}

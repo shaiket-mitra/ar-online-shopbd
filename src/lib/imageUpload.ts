@@ -9,7 +9,7 @@ export async function imageUpload(imageData: File) {
   data.append("file", imageData);
   data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string);
   data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME as string);
-  data.append("folder", "mitra-mart");
+  data.append("folder", "ar_online_shopbd");
 
   try {
     const res = await axios.post(process.env.NEXT_PUBLIC_CLOUDINARY_API_URL as string, data, {

@@ -36,24 +36,24 @@ export async function GET(request: NextRequest) {
 
         const result = await ordersCollection
             .aggregate([
-                { $addFields: { cakeId: { $toObjectId: "$cakeId" } } },
+                { $addFields: { productId: { $toObjectId: "$productId" } } },
                 {
                     $lookup: {
-                        from: "cakes",
-                        localField: "cakeId",
+                        from: "products",
+                        localField: "productId",
                         foreignField: "_id",
-                        as: "cakes"
+                        as: "products"
                     }
                 },
-                { $unwind: "$cakes" },
+                { $unwind: "$products" },
                 {
                     $addFields: {
-                        name: "$cakes.name",
-                        image: "$cakes.image",
-                        category: "$cakes.category"
+                        name: "$products.name",
+                        image: "$products.image",
+                        category: "$products.category"
                     }
                 },
-                { $project: { cakes: 0 } },
+                { $project: { products: 0 } },
                 { $sort: { createdAt: -1 } }
             ])
             .toArray();

@@ -12,8 +12,8 @@ export default function CategoryPage() {
   const { categoryName } = useParams<any>();
   const capitalized = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
   
-  const { data: cakesByCategory = [], isLoading } = useQuery({
-    queryKey: ["cakesByCategory", categoryName],
+  const { data: productsByCategory = [], isLoading } = useQuery({
+    queryKey: ["productsByCategory", categoryName],
     queryFn: async () => {
       const { data } = await axios.get(`/api/category/${capitalized}`);
       return data;
@@ -58,7 +58,7 @@ export default function CategoryPage() {
         >
           <GiCakeSlice className="mr-2" />
           <span className="font-medium">
-            {cakesByCategory.length} {capitalized} Cakes Available
+            {productsByCategory.length} {capitalized} Cakes Available
           </span>
         </motion.div>
 
@@ -80,23 +80,23 @@ export default function CategoryPage() {
       </motion.div>
 
       {/* Cake Grid */}
-      {cakesByCategory && cakesByCategory.length > 0 ? (
+      {productsByCategory && productsByCategory.length > 0 ? (
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          {cakesByCategory.map((cake: any, index: number) => (
+          {productsByCategory.map((product: any, index: number) => (
             <motion.div
-              key={cake._id}
+              key={product._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
               viewport={{ once: true, margin: "0px 0px -100px 0px" }}
               whileHover={{ y: -5 }}
             >
-              <Card cake={cake} />
+              <Card product={product} />
             </motion.div>
           ))}
         </motion.div>
@@ -129,7 +129,7 @@ export default function CategoryPage() {
       >
         <div className="inline-flex items-center bg-pink-100 text-pink-600 px-4 py-2 rounded-full text-sm font-medium">
           <GiCakeSlice className="mr-2" />
-          Showing all {cakesByCategory.length} {categoryName} cakes
+          Showing all {productsByCategory.length} {categoryName} cakes
         </div>
       </motion.div>
     </div>

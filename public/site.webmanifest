@@ -1,0 +1,22 @@
+{
+    "name": "AR Online ShopBD - Premium Watch Store in Bangladesh",
+    "short_name": "AR Watches",
+    "description": "Shop premium men's and women's watches online in Bangladesh. Best price, authentic products, fast nationwide delivery.",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ec4899",
+    "theme_color": "#ec4899",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

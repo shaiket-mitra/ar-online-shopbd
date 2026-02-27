@@ -13,7 +13,7 @@ const Footer = () => {
           <path d="M22.672 15.226l-2.432.811..." />
         </svg>
         <p className="text-base font-semibold tracking-wide">
-          © {new Date().getFullYear()} Mitra Cake Shop Inc. All rights reserved.
+          © {new Date().getFullYear()} AR Online Shop BD Inc. All rights reserved.
         </p>
       </aside>
       <nav className="grid-flow-col gap-6 md:place-self-center md:justify-self-end mr-0 md:mr-8 ">

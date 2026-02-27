@@ -16,7 +16,7 @@ interface Order {
   price: number;
   quantity: number;
   status: string;
-  cakeId: string;
+  productId: string;
 }
 
 const MyOrders = () => {

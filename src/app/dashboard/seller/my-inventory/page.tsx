@@ -1,7 +1,6 @@
 "use client";
 
 import { FiPlus, FiSearch, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import CakeDataRow from "@/components/Dashboard/TableRows/CakeDataRow";
 import useAuth from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,8 +9,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import DeleteModal from "@/components/Modal/DeleteModal";
-import UpdateCakeModal from "@/components/Modal/UpdateCakeModal";
 import toast from "react-hot-toast";
+import ProductDataRow from "@/components/Dashboard/TableRows/ProductDataRow";
+import UpdateProductModal from "@/components/Modal/UpdateProductModal";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -20,22 +20,22 @@ const MyInventory = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCake, setSelectedCake] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [modalType, setModalType] = useState<"delete" | "edit" | null>(null);
   const [isLoadingAction, setIsLoadingAction] = useState(false);
 
   // Fetch cakes data
-  const { data: cakes = [], isLoading, refetch } = useQuery({
-    queryKey: ["cakes", sessionUser?.email],
+  const { data: products = [], isLoading, refetch } = useQuery({
+    queryKey: ["products", sessionUser?.email],
     queryFn: async () => {
       if (!sessionUser?.email) return [];
       try {
         const { data } = await axios.get(
-          `/api/dashboard/seller/get-my-cakes/${sessionUser.email}`
+          `/api/dashboard/seller/get-my-products/${sessionUser.email}`
         );
         return data;
       } catch (error) {
-        toast.error("Failed to fetch cakes");
+        toast.error("Failed to fetch products");
         return [];
       }
     },
@@ -43,15 +43,15 @@ const MyInventory = () => {
   });
 
   // Filter and pagination logic
-  const filteredCakes = cakes.filter((cake: any) => 
-    cake.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cake.category.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter((product: any) => 
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalItems = filteredCakes.length;
+  const totalItems = filteredProducts.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedCakes = filteredCakes.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -59,32 +59,32 @@ const MyInventory = () => {
 
   // Delete cake handler
   const handleDelete = async () => {
-    if (!selectedCake) return;
+    if (!selectedProduct) return;
     
     try {
       setIsLoadingAction(true);
-      await axios.delete(`/api/dashboard/seller/delete-cake/${selectedCake._id}`);
-      toast.success("Cake deleted successfully");
+      await axios.delete(`/api/dashboard/seller/delete-product/${selectedProduct._id}`);
+      toast.success("Product deleted successfully");
       refetch();
     } catch (error) {
-      toast.error("Failed to delete cake");
+      toast.error("Failed to delete product");
     } finally {
       setIsLoadingAction(false);
       setModalType(null);
-      setSelectedCake(null);
+      setSelectedProduct(null);
     }
   };
 
   // Update cake handler
-const handleUpdate = async (cakeData: any) => {
-  if (!selectedCake) return;
+const handleUpdate = async (productData: any) => {
+  if (!selectedProduct) return;
   
   try {
     setIsLoadingAction(true);
     // console.log("selectedCake._id", selectedCake._id)
     const { data } = await axios.put(
-      `/api/dashboard/seller/update-singleCake/${selectedCake._id}`,
-      cakeData,
+      `/api/dashboard/seller/update-singleProduct/${selectedProduct._id}`,
+      productData,
       {
         headers: {
           'Content-Type': 'application/json'
@@ -93,16 +93,16 @@ const handleUpdate = async (cakeData: any) => {
     );
     
     if (data.success) {
-      toast.success(data.message || "Cake updated successfully");
+      toast.success(data.message || "Product updated successfully");
       refetch();
       setModalType(null);
-      setSelectedCake(null);
+      setSelectedProduct(null);
     } else {
-      toast.error(data.message || "Failed to update cake");
+      toast.error(data.message || "Failed to update product");
     }
   } catch (error: any) {
     console.error("Update error:", error);
-    toast.error(error.response?.data?.message || "Failed to update cake");
+    toast.error(error.response?.data?.message || "Failed to update product");
   } finally {
     setIsLoadingAction(false);
   }
@@ -120,7 +120,7 @@ const handleUpdate = async (cakeData: any) => {
         <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-6 py-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <h2 className="text-2xl font-bold text-white flex items-center">
-              My Cake Inventory
+              My Product Inventory
             </h2>
             <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-4">
               <div className="relative">
@@ -129,7 +129,7 @@ const handleUpdate = async (cakeData: any) => {
                 </div>
                 <input
                   type="text"
-                  placeholder="Search cakes..."
+                  placeholder="Search products..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full bg-white"
                   value={searchTerm}
                   onChange={(e) => {
@@ -139,11 +139,11 @@ const handleUpdate = async (cakeData: any) => {
                 />
               </div>
               <button
-                onClick={() => router.push("/dashboard/seller/add-cake")}
+                onClick={() => router.push("/dashboard/seller/add-product")}
                 className="flex items-center justify-center px-4 py-2 bg-white text-pink-600 rounded-lg shadow hover:bg-gray-50 transition-colors"
               >
                 <FiPlus className="mr-2" />
-                Add New Cake
+                Add New Product
               </button>
             </div>
           </div>
@@ -183,18 +183,18 @@ const handleUpdate = async (cakeData: any) => {
                     </div>
                   </td>
                 </tr>
-              ) : paginatedCakes.length > 0 ? (
-                paginatedCakes.map((cake: any, index: number) => (
-                  <CakeDataRow 
-                    key={cake._id} 
-                    cake={cake} 
+              ) : paginatedProducts.length > 0 ? (
+                paginatedProducts.map((product: any, index: number) => (
+                  <ProductDataRow
+                    key={product._id} 
+                    product={product} 
                     index={startIndex + index + 1}
                     onEdit={() => {
-                      setSelectedCake(cake);
+                      setSelectedProduct(product);
                       setModalType("edit");
                     }}
                     onDelete={() => {
-                      setSelectedCake(cake);
+                      setSelectedProduct(product);
                       setModalType("delete");
                     }}
                   />
@@ -203,7 +203,7 @@ const handleUpdate = async (cakeData: any) => {
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="text-gray-500">
-                      {searchTerm ? "No matching cakes found" : "Your inventory is empty"}
+                      {searchTerm ? "No matching products found" : "Your inventory is empty"}
                     </div>
                   </td>
                 </tr>
@@ -271,23 +271,23 @@ const handleUpdate = async (cakeData: any) => {
         isOpen={modalType === "delete"}
         closeModal={() => {
           setModalType(null);
-          setSelectedCake(null);
+          setSelectedProduct(null);
         }}
         handleDelete={handleDelete}
-        title="Delete Cake"
-        description="Are you sure you want to delete this cake? This action cannot be undone."
+        title="Delete Product"
+        description="Are you sure you want to delete this product ? This action cannot be undone."
         isLoading={isLoadingAction}
       />
 
       {/* Update Modal */}
-      <UpdateCakeModal
-        cake={selectedCake}
+      <UpdateProductModal
+        product={selectedProduct}
         isOpen={modalType === "edit"}
         closeModal={() => {
           setModalType(null);
-          setSelectedCake(null);
+          setSelectedProduct(null);
         }}
-        handleCakeUpdate={handleUpdate}
+        handleProductUpdate={handleUpdate}
         isLoading={isLoadingAction}
       />
     </div>

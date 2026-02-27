@@ -5,6 +5,7 @@ import NextAuthSessionProvider from "@/providers/NextAuthSessionProvider";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "react-hot-toast";
+import CustomerSupportLogo from "@/components/shared/CustomerSupportLogo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,32 +21,85 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.aronlineshopbd.com",
   ),
-  title: "Mitra Cake Shop | Premium Cakes & Desserts",
+
+  title: "AR Online ShopBD - Premium Watch Store in Bangladesh",
+
   description:
-    "Discover our exquisite collection of artisanal cakes and desserts crafted with love and premium ingredients",
-  keywords: ["cakes", "desserts", "bakery", "pastries", "wedding cakes"],
+    "AR Online ShopBD is a trusted online watch store in Bangladesh. Explore premium men's and women's watches at the best prices with fast delivery nationwide.",
+
+  keywords: [
+    "Watch Store Bangladesh",
+    "Buy Watches Online BD",
+    "Online Watch Shop BD",
+    "Men's Watch Bangladesh",
+    "Women's Watch Bangladesh",
+    "Premium Watches BD",
+    "Luxury Watches Bangladesh",
+    "Affordable Watches BD",
+    "Genuine Watches Bangladesh",
+    "AR Online ShopBD",
+    "Best Watch Store in Bangladesh",
+  ],
+
+  authors: [{ name: "AR Online ShopBD", url: "https://www.aronlineshopbd.com" }],
+
+  robots: "index, follow",
+
+  verification: {
+    google: "",
+  },
+
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180" },
+      // { url: "/apple-touch-icon-152x152.png", sizes: "152x152" },
+      // { url: "/apple-touch-icon-167x167.png", sizes: "167x167" },
+    ],
+    other: [
+      {
+        rel: "manifest",
+        url: "/site.webmanifest",
+      },
+      // {
+      //   rel: "mask-icon",
+      //   url: "/safari-pinned-tab.svg",
+      //   color: "#5bbad5",
+      // },
+    ],
+  },
+
   openGraph: {
-    title: "Mitra Cake Shop",
-    description: "Premium Cakes & Desserts",
-    url: "/",
-    siteName: "Mitra Cake Shop",
+    title: "AR Online ShopBD - Premium Watch Collection",
+    description:
+      "Shop premium men's and women's watches online in Bangladesh. 100% authentic products with fast delivery nationwide.",
+    url: "https://www.aronlineshopbd.com",
+    siteName: "AR Online ShopBD",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://www.aronlineshopbd.com/og-image.jpg",
         width: 1200,
         height: 630,
+        alt: "AR Online Watch Store",
       },
     ],
     locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Mitra Cake Shop",
-    description: "Premium Cakes & Desserts",
-    images: ["/og-image.jpg"],
+    title: "AR Online ShopBD - Watch Store in Bangladesh",
+    description:
+      "Premium watches for men & women in Bangladesh. Best price, authentic products, fast delivery.",
+    images: ["https://www.aronlineshopbd.com/og-image.jpg"],
   },
 };
 
@@ -64,7 +118,9 @@ export default function RootLayout({
           type="image/png"
           sizes="180x180"
         />
+        <link rel="manifest" href="/site.webmanifest" />
       </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-white text-gray-900 min-h-screen flex flex-col`}
       >
@@ -83,27 +139,26 @@ export default function RootLayout({
               },
               success: {
                 iconTheme: {
-                  primary: "#ec4899", // pink-500
+                  primary: "#ec4899",
                   secondary: "#fff",
                 },
               },
               error: {
                 iconTheme: {
-                  primary: "#ef4444", // red-500
+                  primary: "#ef4444",
                   secondary: "#fff",
                 },
               },
             }}
           />
-          
+
           <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm">
             <Navbar />
           </header>
 
           <main className="flex-1 w-full">
-            <div className="mx-auto max-w-7xl">
-              {children}
-            </div>
+            <div className="mx-auto max-w-7xl">{children}</div>
+            <CustomerSupportLogo />
           </main>
 
           <footer className="border-t border-gray-100 bg-white">

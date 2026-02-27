@@ -17,7 +17,7 @@ const AdminStatistics = () => {
     },
   });
 
-  const { totalUser, totalcakes, totalOrders, totalPrice } = statData || {};
+  const { totalUser, totalProducts, totalOrders, totalPrice } = statData || {};
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
@@ -67,10 +67,10 @@ const AdminStatistics = () => {
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Total cakes
+                Total products
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                {totalcakes}
+                {totalProducts}
               </h4>
             </div>
           </div>

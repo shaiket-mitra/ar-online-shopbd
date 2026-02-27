@@ -10,7 +10,7 @@ export default function Banner() {
       <div className="absolute inset-0">
         <Image
           src={coverImg}
-          alt="Delicious cake selection"
+          alt="Delicious product selection"
           fill
           className="object-cover"
           priority
@@ -33,7 +33,7 @@ export default function Banner() {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             Everything is batter with a bite of{" "}
-            <span className="text-pink-400">Cake</span>
+            <span className="text-pink-400">Product</span>
           </motion.h1>
 
           <motion.p
@@ -53,7 +53,7 @@ export default function Banner() {
           >
             <button
               onClick={() => {
-                const target = document.getElementById("cakes");
+                const target = document.getElementById("products");
                 target?.scrollIntoView({ behavior: "smooth" });
               }}
               className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-medium text-pink-600 transition duration-300 ease-out rounded-full shadow-lg hover:shadow-xl active:scale-95 bg-white hover:bg-pink-50"

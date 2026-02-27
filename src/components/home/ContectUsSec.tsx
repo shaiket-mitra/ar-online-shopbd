@@ -7,14 +7,14 @@ export default function ContactUsSec() {
     {
       icon: <FiPhone className="text-2xl" />,
       title: "Call Us",
-      details: ["+8801959994969", "+8801571515000"],
+      details: ["+8801917268820",],
       color: "text-blue-500",
       bg: "bg-blue-50"
     },
     {
       icon: <FiMail className="text-2xl" />,
       title: "Email Us",
-      details: ["himu.mitra97@gmail.com", "shanto.mitra33@gmail.com"],
+      details: ["aronlineshopbd731@gmail.com",],
       color: "text-pink-500",
       bg: "bg-pink-50"
     },

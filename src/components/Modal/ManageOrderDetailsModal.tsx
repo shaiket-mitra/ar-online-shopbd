@@ -17,7 +17,7 @@ interface OrderData {
   price: number;
   quantity: number;
   status: string;
-  cakeId: string;
+  productId: string;
   customer: {
     name: string;
     email: string;

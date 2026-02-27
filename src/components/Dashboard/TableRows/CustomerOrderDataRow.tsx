@@ -25,7 +25,7 @@ const CustomerOrderDataRow = ({
 }: any) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const { name, image, category, price, quantity, _id, status, cakeId } =
+  const { name, image, category, price, quantity, _id, status, productId } =
     orderData;
 
   const closeDeleteModal = () => setIsDeleteOpen(false);
@@ -51,7 +51,7 @@ const CustomerOrderDataRow = ({
   async function handleDelete() {
     try {
       await axios.delete(`/api/dashboard/delete-order/${_id}`);
-      await axios.patch(`/api/dashboard/update-cake-quentity/${cakeId}`, {
+      await axios.patch(`/api/dashboard/update-product-quentity/${productId}`, {
         quantityToUpdate: quantity,
         status: "increase",
       });

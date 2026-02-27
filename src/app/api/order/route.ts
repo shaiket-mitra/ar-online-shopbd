@@ -1,67 +1,74 @@
-// import connectDb from "@/lib/connectDb";
-// import { mailSend } from "@/lib/mailSend";
-// import { NextRequest, NextResponse } from "next/server";
-
-// export async function POST(request: NextRequest) {
-//     const orderDetails = await request.json();
-//     try {
-//         const {ordersCollection} = await connectDb();
-//         const result = await ordersCollection.insertOne(orderDetails)
-//         if (result?.insertedId) {
-//             const mailData = {
-//                 address: orderDetails.customer.email,
-//                 subject: "Order Successfull",
-//                 body: "You have placed an order successfully."
-//             }
-
-//             await mailSend(mailData)
-//         }
-
-//         return NextResponse.json(result)
-//     } catch (error) {
-//         return NextResponse.json({ message: error })
-//     }
-// }
-
-
 import connectDb from "@/lib/connectDb";
 import { mailSend } from "@/lib/mailSend";
 import { NextRequest, NextResponse } from "next/server";
 
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function safeName(input: any) {
+  const name = (typeof input === "string" ? input : "").trim();
+  return name || "Customer";
+}
+
 export async function POST(request: NextRequest) {
-    const orderDetails = await request.json();
+  const orderDetails = await request.json();
 
-    try {
-        const { ordersCollection } = await connectDb();
-        const result = await ordersCollection.insertOne(orderDetails);
+  try {
+    const { ordersCollection } = await connectDb();
+    const result = await ordersCollection.insertOne(orderDetails);
 
-        // ✅ Only send email if a valid email exists
-        const email = orderDetails?.customer?.email;
-        const hasValidEmail =
-            typeof email === "string" &&
-            email.trim().length > 0 &&
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    // ✅ orderDetails থেকে name/email নাও (PurchaseModal থেকে আসছে)
+    const rawEmail = orderDetails?.customer?.email;
+    const rawName = orderDetails?.customer?.name;
 
-        if (result?.insertedId && hasValidEmail) {
-            const mailData = {
-                address: email.trim(),
-                subject: "Order Successful",
-                body: "You have placed an order successfully.",
-            };
+    const email =
+      typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : "";
 
-            try {
-                await mailSend(mailData);
-            } catch (mailError) {
-                // ✅ mail fail হলেও order success থাকবে
-                console.error("Mail send failed:", mailError);
-            }
-        }
+    // "Guest" বা empty হলে mail যাবে না
+    const hasValidEmail =
+      !!email && email !== "guest" && isValidEmail(email);
 
-        return NextResponse.json(result);
-    } catch (error: any) {
-        return NextResponse.json(
-            { message: error?.message || "Something went wrong" },
-            { status: 500 }
-        );
+    if (result?.insertedId && hasValidEmail) {
+      const name = safeName(rawName);
+
+      const mailData = {
+        to: email,
+        subject: "Order Successful",
+        text: `Hello, ${name},
+
+Thank you for ordering from AR Online ShopBD!
+
+Your order has been placed successfully.
+
+Best regards,
+Team AR Online ShopBD`,
+        html: `
+<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+  <p style="color: #ec4899;">Hello ${name},</p>
+  <p style="color: black;">Thank you for ordering from AR Online ShopBD!</p>
+  <p style="font-size: 18px;">
+    <span style="color: #ec4899; font-weight: bold;">Your order has been placed successfully.</span>
+  </p>
+  <br/>
+  <p style="color: black;">Best regards,<br/><strong>Team AR Online ShopBD</strong></p>
+</div>`,
+      };
+
+      const mailRes = await mailSend(mailData);
+      console.log("ORDER MAIL RESULT =>", mailRes);
+    } else {
+      console.log("ORDER MAIL SKIPPED =>", {
+        inserted: !!result?.insertedId,
+        email,
+      });
     }
+
+    return NextResponse.json(result);
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error?.message || "Something went wrong" },
+      { status: 500 }
+    );
+  }
 }

@@ -20,7 +20,7 @@ const SellerOrderDataRow = ({ orderData, refetch, index }: any) => {
   async function handleStatus(newStatus: any) {
     if (orderData.status === newStatus) return;
     try {
-      await axios.patch("/api/dashboard/seller/update-cake-status", {
+      await axios.patch("/api/dashboard/seller/update-product-status", {
         orderId: orderData?._id,
         orderStatus: newStatus,
       });
@@ -35,7 +35,7 @@ const SellerOrderDataRow = ({ orderData, refetch, index }: any) => {
     try {
       await axios.delete(`/api/dashboard/delete-order/${orderData?._id}`);
       await axios.patch(
-        `/api/dashboard/update-cake-quentity/${orderData?.cakeId}`,
+        `/api/dashboard/update-product-quentity/${orderData?.productId}`,
         {
           quantityToUpdate: orderData?.quantity,
           status: "increase",

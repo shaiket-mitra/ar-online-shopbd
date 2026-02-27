@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest) {
                 subject: "Account Verification - OTP Code",
                 text: `Hello ${existingUser.name},
     
-                Thank you for registering with Mitra Cake Shop!
+                Thank you for registering with AR_Online_Shopbd!
     
                 To complete your registration, please use the following One-Time Password (OTP):
     
@@ -29,7 +29,7 @@ export async function PATCH(request: NextRequest) {
                 html: `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                     <p style="color: #ec4899;">Hello ${existingUser.name},</p>
-                    <p style="color: black;">Thank you for registering with Mitra Cake Shop!</p>
+                    <p style="color: black;">Thank you for registering with AR_Online_Shopbd!</p>
                     <p style="font-size: 18px;">
                         <strong>Your OTP:</strong> 
                         <span style="color: #ec4899; font-weight: bold;">${otp}</span>

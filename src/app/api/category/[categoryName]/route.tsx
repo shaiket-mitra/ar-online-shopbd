@@ -5,8 +5,8 @@ export async function GET(request: NextRequest, { params}: any) {
   const { categoryName } = await params;
 
   try {
-    const { cakesCollection } = await connectDb();
-    const result = await cakesCollection
+    const { productsCollection } = await connectDb();
+    const result = await productsCollection
       .find({ category: categoryName })
       .sort({ _id: -1 })
       .toArray();

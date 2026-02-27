@@ -1,45 +1,13 @@
-// import { BsFillHouseAddFill } from "react-icons/bs";
-// import { MdHomeWork, MdOutlineManageHistory } from "react-icons/md";
-// import MenuItem from "./MenuItem";
-// import { BsGraphUp } from "react-icons/bs";
-
-// const SellerMenu = () => {
-//   return (
-//     <>
-//       <MenuItem
-//         icon={BsGraphUp}
-//         label="Statistics"
-//         address="/dashboard/statistics"
-//       />
-//       <MenuItem
-//         icon={BsFillHouseAddFill}
-//         label="Add cake"
-//         address="/dashboard/seller/add-cake"
-//       />
-//       <MenuItem
-//         icon={MdHomeWork}
-//         label="My Inventory"
-//         address="/dashboard/seller/my-inventory"
-//       />
-//       <MenuItem
-//         icon={MdOutlineManageHistory}
-//         label="Manage Orders"
-//         address="/dashboard/seller/manage-orders"
-//       />
-//     </>
-//   );
-// };
-
-// export default SellerMenu;
-
-
-
 "use client";
 
-import { BsFillHouseAddFill, BsGraphUp } from "react-icons/bs";
+import { BsFillHouseAddFill, BsGraphUp, BsSliders, BsSliders2 } from "react-icons/bs";
 import { MdHomeWork, MdOutlineManageHistory } from "react-icons/md";
 import MenuItem from "./MenuItem";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+const PiFlagBannerFoldFill = dynamic(() =>
+  import("react-icons/pi").then((mod) => mod.PiFlagBannerFoldFill)
+);
 
 interface SellerMenuProps {
   onItemClick?: () => void; // Callback to close mobile sidebar
@@ -60,6 +28,19 @@ const SellerMenu = ({ onItemClick }: SellerMenuProps) => {
           onClick={onItemClick}
         />
       </motion.div>
+      
+      {/* Add Sliders */}
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 400 }}
+      >
+        <MenuItem
+          icon={PiFlagBannerFoldFill}
+          label="Update Banner"
+          address="/dashboard/seller/update-banner"
+          onClick={onItemClick}
+        />
+      </motion.div>
 
       {/* Add Product */}
       <motion.div
@@ -69,7 +50,7 @@ const SellerMenu = ({ onItemClick }: SellerMenuProps) => {
         <MenuItem
           icon={BsFillHouseAddFill}
           label="Add New Product"
-          address="/dashboard/seller/add-cake"
+          address="/dashboard/seller/add-product"
           onClick={onItemClick}
         />
       </motion.div>

@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
   const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,19 +38,20 @@ const SignUp = () => {
       }
     } catch (err: any) {
       console.error(err);
-      toast.error(err.message);
+      toast.error(err?.response?.data?.message || err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
     try {
-      await signIn("google");
-      // toast.success("Signup Successful");
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err.message);
+      await signIn("google", { callbackUrl: "/" });
+    } catch (error) {
+      console.error("Google login failed", error);
+      toast.error("Google login failed");
+      setGoogleLoading(false); // Fallback
     }
   };
 
@@ -126,6 +129,31 @@ const SignUp = () => {
               </button>
             </div>
           </form>
+
+          {/* Divider */}
+          <div className="flex items-center w-full gap-2">
+            <div className="flex-grow h-[1px] bg-gray-200" />
+            <span className="text-gray-400 text-xs">OR</span>
+            <div className="flex-grow h-[1px] bg-gray-200" />
+          </div>
+
+          {/* Google Login Button */}
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-md py-2 text-sm bg-gray-100 transition min-h-11 max-h-11"
+          >
+            {googleLoading ? (
+              <span className="loading loading-spinner text-pink-400"></span>
+            ) : (
+              <>
+                <FcGoogle size={18} />
+                Continue with Google
+              </>
+            )}
+          </button>
+
           <p className="px-6 text-sm text-center text-gray-400 mt-5">
             Already have an account?{" "}
             <Link
