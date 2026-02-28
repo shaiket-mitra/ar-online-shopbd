@@ -78,9 +78,9 @@ const Card = ({ product, refetch }: any) => {
                     {discount?.discountPrice} TK
                   </span>
                 </div>
-                <span className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded">
+                {/* <span className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded">
                   Save {price - discount?.discountPrice} TK
-                </span>
+                </span> */}
               </>
             ) : (
               <span className="text-lg font-bold text-pink-500">{price} TK</span>

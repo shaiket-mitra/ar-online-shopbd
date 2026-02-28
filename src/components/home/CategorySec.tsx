@@ -55,7 +55,7 @@ export default function CategorySec({ products }: Props) {
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
         {uniqueCategories.map((categorySlug, idx) => {
           const meta = CATEGORY_META[categorySlug]; // ✅ no error
           const title = meta?.label || titleFromSlug(categorySlug);
