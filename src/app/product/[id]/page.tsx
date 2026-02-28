@@ -83,7 +83,7 @@ const ProductDetails = () => {
         <div className="lg:w-1/2 p-6 md:p-8 flex flex-col">
           <div className="flex-1">
             <div className="mb-4">
-              <span className="inline-block bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full mb-3">
+              <span className="inline-block bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full mb-3 capitalize">
                 {category}
               </span>
               <Heading title={name} center={false} />

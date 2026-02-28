@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { FiUpload, FiDollarSign, FiPackage, FiTag, FiInfo } from "react-icons/fi";
 import Image from "next/image";
+import { WATCH_CATEGORIES } from "@/utils/watchCategories";
 
 interface AddProductFormProps {
   handleSubmit: (e: React.FormEvent) => void;
@@ -11,15 +12,6 @@ interface AddProductFormProps {
   setUploadButtonText: (text: string) => void;
   loading: boolean;
 }
-
-const WATCH_CATEGORIES = [
-  { value: "new-arrival", label: "New Arrival" },
-  { value: "best-selling", label: "Best Selling" },
-  { value: "limited-edition", label: "Limited Edition" },
-  { value: "couple-watch", label: "Couple Watch" },
-  { value: "gift-collection", label: "Gift Collection" },
-  { value: "eid-special-offer", label: "Eid Special Offer" },
-];
 
 const AddProductForm = ({
   handleSubmit,
@@ -73,7 +65,7 @@ const AddProductForm = ({
                     name="name"
                     id="name"
                     type="text"
-                    placeholder="e.g. Naviforce NF 9182 Men's Watch"
+                    placeholder="Write Product Name here"
                     required
                   />
                 </div>

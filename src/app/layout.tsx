@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.aronlineshopbd.com",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://ar-online-shopbd.vercel.app",
   ),
 
   title: "AR Online ShopBD - Premium Watch Store in Bangladesh",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     "Best Watch Store in Bangladesh",
   ],
 
-  authors: [{ name: "AR Online ShopBD", url: "https://www.aronlineshopbd.com" }],
+  authors: [{ name: "AR Online ShopBD", url: "https://ar-online-shopbd.vercel.app" }],
 
   robots: "index, follow",
 
@@ -80,11 +80,11 @@ export const metadata: Metadata = {
     title: "AR Online ShopBD - Premium Watch Collection",
     description:
       "Shop premium men's and women's watches online in Bangladesh. 100% authentic products with fast delivery nationwide.",
-    url: "https://www.aronlineshopbd.com",
+    url: "https://ar-online-shopbd.vercel.app",
     siteName: "AR Online ShopBD",
     images: [
       {
-        url: "https://www.aronlineshopbd.com/og-image.jpg",
+        url: "https://ar-online-shopbd.vercel.app/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "AR Online Watch Store",
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     title: "AR Online ShopBD - Watch Store in Bangladesh",
     description:
       "Premium watches for men & women in Bangladesh. Best price, authentic products, fast delivery.",
-    images: ["https://www.aronlineshopbd.com/og-image.jpg"],
+    images: ["https://ar-online-shopbd.vercel.app/og-image.jpg"],
   },
 };
 
