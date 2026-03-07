@@ -21,29 +21,28 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://ar-online-shopbd.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://mitra-cake-shop.vercel.app",
   ),
 
-  title: "AR Online ShopBD - Premium Watch Store in Bangladesh",
+  title: "Mitra Cake Shop - Fresh & Custom Cakes in Bangladesh",
 
   description:
-    "AR Online ShopBD is a trusted online watch store in Bangladesh. Explore premium men's and women's watches at the best prices with fast delivery nationwide.",
+    "Mitra Cake Shop is a trusted online cake shop in Bangladesh. Order fresh, delicious, and customized cakes for birthdays, weddings, and special occasions with fast delivery.",
 
   keywords: [
-    "Watch Store Bangladesh",
-    "Buy Watches Online BD",
-    "Online Watch Shop BD",
-    "Men's Watch Bangladesh",
-    "Women's Watch Bangladesh",
-    "Premium Watches BD",
-    "Luxury Watches Bangladesh",
-    "Affordable Watches BD",
-    "Genuine Watches Bangladesh",
-    "AR Online ShopBD",
-    "Best Watch Store in Bangladesh",
+    "Cake Shop Bangladesh",
+    "Online Cake Shop BD",
+    "Buy Cakes Online Bangladesh",
+    "Birthday Cake Bangladesh",
+    "Wedding Cake Bangladesh",
+    "Custom Cake Bangladesh",
+    "Chocolate Cake BD",
+    "Fresh Cake Delivery Bangladesh",
+    "Best Cake Shop BD",
+    "Mitra Cake Shop",
   ],
 
-  authors: [{ name: "AR Online ShopBD", url: "https://ar-online-shopbd.vercel.app" }],
+  authors: [{ name: "Mitra Cake Shop", url: "" }],
 
   robots: "index, follow",
 
@@ -58,36 +57,27 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180" },
-      // { url: "/apple-touch-icon-152x152.png", sizes: "152x152" },
-      // { url: "/apple-touch-icon-167x167.png", sizes: "167x167" },
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     other: [
       {
         rel: "manifest",
         url: "/site.webmanifest",
       },
-      // {
-      //   rel: "mask-icon",
-      //   url: "/safari-pinned-tab.svg",
-      //   color: "#5bbad5",
-      // },
     ],
   },
 
   openGraph: {
-    title: "AR Online ShopBD - Premium Watch Collection",
+    title: "Mitra Cake Shop - Fresh & Custom Cakes",
     description:
-      "Shop premium men's and women's watches online in Bangladesh. 100% authentic products with fast delivery nationwide.",
-    url: "https://ar-online-shopbd.vercel.app",
-    siteName: "AR Online ShopBD",
+      "Order delicious cakes online from Mitra Cake Shop. Perfect for birthdays, weddings, and celebrations with fast delivery across Bangladesh.",
+    url: "https://mitra-cake-shop.vercel.app",
+    siteName: "Mitra Cake Shop",
     images: [
       {
-        url: "https://ar-online-shopbd.vercel.app/og-image.jpg",
+        url: "https://mitra-cake-shop.vercel.app/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "AR Online Watch Store",
+        alt: "Mitra Cake Shop",
       },
     ],
     locale: "en_US",
@@ -96,10 +86,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "AR Online ShopBD - Watch Store in Bangladesh",
+    title: "Mitra Cake Shop - Online Cake Store",
     description:
-      "Premium watches for men & women in Bangladesh. Best price, authentic products, fast delivery.",
-    images: ["https://ar-online-shopbd.vercel.app/og-image.jpg"],
+      "Fresh and customized cakes for birthdays, weddings, and celebrations. Order online from Mitra Cake Shop.",
+    images: ["https://mitra-cake-shop.vercel.app/og-image.jpg"],
   },
 };
 

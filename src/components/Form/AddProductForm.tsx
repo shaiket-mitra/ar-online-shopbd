@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { FiUpload, FiDollarSign, FiPackage, FiTag, FiInfo } from "react-icons/fi";
 import Image from "next/image";
-import { WATCH_CATEGORIES } from "@/utils/watchCategories";
+import { PRODUCT_CATEGORIES } from "@/utils/productCategories";
 
 interface AddProductFormProps {
   handleSubmit: (e: React.FormEvent) => void;
@@ -91,7 +91,7 @@ const AddProductForm = ({
                       Select a category
                     </option>
 
-                    {WATCH_CATEGORIES.map((c) => (
+                    {PRODUCT_CATEGORIES.map((c) => (
                       <option key={c.value} value={c.value}>
                         {c.label}
                       </option>

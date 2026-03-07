@@ -149,7 +149,7 @@ const ProductDetails = () => {
               label={
                 <div className="flex items-center justify-center">
                   <FiShoppingCart className="mr-2" />
-                  {quantity > 0 ? "Purchase Now" : "Notify Me"}
+                  {quantity > 0 ? "Order Now" : "Notify Me"}
                 </div>
               }
               disabled={quantity <= 0}

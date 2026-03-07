@@ -7,7 +7,7 @@ export async function GET() {
 
         // Fetch counts
         const totalUser = await usersCollection.estimatedDocumentCount();
-        const totalproducts = await productsCollection.estimatedDocumentCount();
+        const totalProducts = await productsCollection.estimatedDocumentCount();
 
         // Fetch all orders
         const totalOrders = await ordersCollection.find().toArray();
@@ -15,7 +15,7 @@ export async function GET() {
         // Calculate total price
         const totalPrice = totalOrders.reduce((sum: any, order: any) => sum + (order.price || 0), 0);
 
-        return NextResponse.json({ totalUser, totalproducts, totalOrders: totalOrders.length, totalPrice });
+        return NextResponse.json({ totalUser, totalProducts, totalOrders: totalOrders.length, totalPrice });
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

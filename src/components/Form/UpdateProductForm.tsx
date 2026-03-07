@@ -1,7 +1,7 @@
-// components/Modal/UpdateCakeForm.tsx
 "use client";
 
 import { imageUpload } from "@/lib/imageUpload";
+import { PRODUCT_CATEGORIES } from "@/utils/productCategories";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -25,13 +25,12 @@ const UpdateProductForm = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate image
     if (!file.type.startsWith("image/")) {
       setImageError("Please select an image file (JPEG, PNG)");
       return;
     }
+
     if (file.size > 5 * 1024 * 1024) {
-      // 5MB
       setImageError("Image size must be less than 5MB");
       return;
     }
@@ -47,7 +46,6 @@ const UpdateProductForm = ({
     const formData = new FormData(form);
 
     try {
-      // Handle image upload
       const imageFile = formData.get("image") as File;
       let imageUrl = image;
 
@@ -60,7 +58,6 @@ const UpdateProductForm = ({
         }
       }
 
-      // Prepare data with proper types
       const productData = {
         name: formData.get("name") as string,
         category: formData.get("category") as string,
@@ -71,7 +68,6 @@ const UpdateProductForm = ({
         image: imageUrl,
       };
 
-      // Validate
       if (!productData.name.trim() || !productData.category.trim()) {
         toast.error("Name and category are required");
         return;
@@ -98,9 +94,7 @@ const UpdateProductForm = ({
   return (
     <div className="w-full flex flex-col justify-center items-center bg-white p-2 rounded-xl">
       <form className="w-full" onSubmit={handleSubmit}>
-        {/* ... rest of your form fields remain the same ... */}
         <div className="grid grid-cols-1 gap-6">
-          {/* Existing form fields remain the same */}
           {/* Name */}
           <div className="space-y-2">
             <label htmlFor="name" className="block text-gray-700 font-medium">
@@ -123,20 +117,22 @@ const UpdateProductForm = ({
               htmlFor="category"
               className="block text-gray-700 font-medium"
             >
-              🏷️ Category
+              Category
             </label>
             <select
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
+              id="category"
               name="category"
               defaultValue={category}
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
             >
-              <option value="Anniversary">Anniversary</option>
-              <option value="Birthday">Birthday</option>
-              <option value="Chocolate">Chocolate</option>
-              <option value="CupProducts">CupProduct</option>
-              <option value="Wedding">Wedding</option>
-              <option value="Custom">Custom</option>
+              <option value="">Select Category</option>
+
+              {PRODUCT_CATEGORIES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -146,7 +142,7 @@ const UpdateProductForm = ({
               htmlFor="description"
               className="block text-gray-700 font-medium"
             >
-              📝 Description
+              Description
             </label>
             <textarea
               id="description"
@@ -159,13 +155,12 @@ const UpdateProductForm = ({
 
           {/* Price & Quantity */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Price */}
             <div className="space-y-2">
               <label
                 htmlFor="price"
                 className="block text-gray-700 font-medium"
               >
-                💲 Price
+                Price
               </label>
               <input
                 className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
@@ -205,13 +200,12 @@ const UpdateProductForm = ({
               </div>
             )}
 
-            {/* Quantity */}
             <div className="space-y-2">
               <label
                 htmlFor="quantity"
                 className="block text-gray-700 font-medium"
               >
-                📦 Quantity
+                Quantity
               </label>
               <input
                 className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
@@ -228,7 +222,7 @@ const UpdateProductForm = ({
           {/* Image Upload + Preview */}
           <div className="flex flex-col items-center border border-gray-300 rounded-md p-4 space-y-4">
             <label className="block text-gray-700 font-medium">
-              📸 Upload Image
+              Upload Image
             </label>
 
             {previewImage && (
@@ -252,7 +246,12 @@ const UpdateProductForm = ({
                 onChange={handleImageChange}
               />
             </label>
+
+            {imageError && (
+              <p className="text-sm text-red-500">{imageError}</p>
+            )}
           </div>
+
           {/* Button group */}
           <div className="flex justify-center space-x-4 mt-6">
             <button

@@ -74,6 +74,33 @@ const HeaderImageSlider = () => {
     };
   }, [nextSlide, prevSlide]);
 
+  if (sliderData.length === 0)
+    return (
+      <div className="text-center py-16 bg-pink-50 rounded-xl">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full text-pink-500 mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h3 className="text-xl font-medium text-gray-700">
+          No Offers Available
+        </h3>
+        <p className="text-gray-500 mt-2">
+          We&apos;re currently baking new delicious products!
+        </p>
+      </div>
+    );
   if (!sliderData.length) return <LoadingSpinner />;
 
   return (

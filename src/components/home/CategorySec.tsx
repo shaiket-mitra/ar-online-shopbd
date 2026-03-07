@@ -6,7 +6,7 @@ import {
   CATEGORY_META,
   type WatchCategorySlug,
   titleFromSlug,
-} from "@/utils/watchCategories";
+} from "@/utils/productCategories";
 
 type Product = {
   id: number;

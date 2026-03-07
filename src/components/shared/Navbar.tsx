@@ -96,11 +96,11 @@ const Navbar = () => {
               className="text-xl md:text-2xl lg:text-2xl font-bold bg-white bg-clip-text text-transparent"
             >
               <Image
-                src={"/ar_shop_logo.png"}
+                src={"/shop-logo.png"}
                 alt="shop logo"
                 width={200}
                 height={200}
-                className="sm:w-40 w-[8.2rem]"
+                className="sm:w-44 w-[8rem]"
               />
             </motion.span>
           </Link>

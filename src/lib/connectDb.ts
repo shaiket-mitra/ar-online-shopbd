@@ -21,7 +21,7 @@ clientPromise = global._mongoClientPromise;
 
 export default async function connectDb() {
   const client = await clientPromise;
-  const db = client.db("ar_online_shopbd_DB");
+  const db = client.db("mitra-cake-shop-DB");
 
   return {
     client,

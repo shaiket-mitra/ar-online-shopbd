@@ -54,12 +54,12 @@ const Card = ({ product, refetch }: any) => {
               <span className="inline-block bg-pink-100 text-pink-600 text-xs px-2 py-1 rounded-full mb-2 capitalize">
                 {category}
               </span>
-              <h3 className="text-xl font-bold group-hover:text-pink-500 transition-colors line-clamp-2 text-pink-400">
+              <h3 className="text-xl font-bold group-hover:text-pink-500 transition-colors line-clamp-1 text-pink-400">
                 {name}
               </h3>
             </div>
 
-            <p className="text-gray-600 text-sm flex-1 line-clamp-2">
+            <p className="text-gray-600 text-sm flex-1 line-clamp-2 min-h-[40px]">
               {description}
             </p>
           </div>

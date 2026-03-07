@@ -5,8 +5,8 @@ import WhatsAppLogo from "@/assets/images/whatsAppLogo.png";
 import MessengerLogo from "@/assets/images/messengerLogo.png";
 
 const CustomerSupportLogo = () => {
-  const whatsappLink = "https://wa.me/8801917268820";
-const messengerLink = "https://www.facebook.com/profile.php?id=61555695895882";
+  const whatsappLink = "https://wa.me/8801518318318";
+  const messengerLink = "https://www.facebook.com/himu.mitra.pinak";
 
   return (
     <div className="fixed bottom-5 right-5 flex flex-col gap-3 z-50">
