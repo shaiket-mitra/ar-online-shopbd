@@ -19,49 +19,73 @@ const HeaderImageSlider = () => {
   const { sliderData } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const startXRef = useRef(0);
+
+  const slides: Slide[] = Array.isArray(sliderData) ? sliderData : [];
+  const isLoading = sliderData === undefined || sliderData === null;
+  const hasSlides = slides.length > 0;
+  const hasMultipleSlides = slides.length > 1;
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % sliderData.length);
-  }, [sliderData.length]);
+    if (!hasMultipleSlides) return;
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [hasMultipleSlides, slides.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === 0 ? sliderData.length - 1 : prev - 1));
-  }, [sliderData.length]);
+    if (!hasMultipleSlides) return;
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  }, [hasMultipleSlides, slides.length]);
+
+  // যদি slide count কমে যায় আর currentSlide out of range হয়ে যায়
+  useEffect(() => {
+    if (currentSlide >= slides.length && slides.length > 0) {
+      setCurrentSlide(0);
+    }
+  }, [currentSlide, slides.length]);
 
   // Autoplay
   useEffect(() => {
-    if (!sliderData.length) return;
-    const interval = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
-    return () => clearInterval(interval);
-  }, [sliderData.length, nextSlide]);
+    if (!hasMultipleSlides) return;
 
-  // Swipe/Drag Support
+    const interval = setInterval(() => {
+      nextSlide();
+    }, AUTO_PLAY_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [hasMultipleSlides, nextSlide]);
+
+  // Swipe / Drag Support
   useEffect(() => {
     const slider = sliderRef.current;
-    if (!slider) return;
+    if (!slider || !hasMultipleSlides) return;
 
-    let startX = 0;
-    let endX = 0;
+    const handleSwipe = (endX: number) => {
+      const diff = startXRef.current - endX;
 
-    const handleTouchStart = (e: TouchEvent) => (startX = e.touches[0].clientX);
+      if (diff > SWIPE_THRESHOLD) {
+        nextSlide();
+      } else if (diff < -SWIPE_THRESHOLD) {
+        prevSlide();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startXRef.current = e.touches[0].clientX;
+    };
+
     const handleTouchEnd = (e: TouchEvent) => {
-      endX = e.changedTouches[0].clientX;
-      handleSwipe();
+      handleSwipe(e.changedTouches[0].clientX);
     };
 
-    const handleMouseDown = (e: MouseEvent) => (startX = e.clientX);
+    const handleMouseDown = (e: MouseEvent) => {
+      startXRef.current = e.clientX;
+    };
+
     const handleMouseUp = (e: MouseEvent) => {
-      endX = e.clientX;
-      handleSwipe();
+      handleSwipe(e.clientX);
     };
 
-    const handleSwipe = () => {
-      const diff = startX - endX;
-      if (diff > SWIPE_THRESHOLD) nextSlide();
-      else if (diff < -SWIPE_THRESHOLD) prevSlide();
-    };
-
-    slider.addEventListener("touchstart", handleTouchStart);
+    slider.addEventListener("touchstart", handleTouchStart, { passive: true });
     slider.addEventListener("touchend", handleTouchEnd);
     slider.addEventListener("mousedown", handleMouseDown);
     slider.addEventListener("mouseup", handleMouseUp);
@@ -72,9 +96,15 @@ const HeaderImageSlider = () => {
       slider.removeEventListener("mousedown", handleMouseDown);
       slider.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [nextSlide, prevSlide]);
+  }, [hasMultipleSlides, nextSlide, prevSlide]);
 
-  if (sliderData.length === 0)
+  // Loading state
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Empty state
+  if (!hasSlides) {
     return (
       <div className="text-center py-16 bg-pink-50 rounded-xl">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full text-pink-500 mb-4">
@@ -93,6 +123,7 @@ const HeaderImageSlider = () => {
             />
           </svg>
         </div>
+
         <h3 className="text-xl font-medium text-gray-700">
           No Offers Available
         </h3>
@@ -101,7 +132,7 @@ const HeaderImageSlider = () => {
         </p>
       </div>
     );
-  if (!sliderData.length) return <LoadingSpinner />;
+  }
 
   return (
     <div
@@ -113,9 +144,9 @@ const HeaderImageSlider = () => {
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {sliderData.map((slide: Slide, index: number) => (
+        {slides.map((slide, index) => (
           <Link
-            href={slide.productLink}
+            href={slide.productLink || "#"}
             key={slide._id}
             className="min-w-full bg-gradient-to-br from-[#f8f8f8] to-[#eef7f5] flex items-center justify-center aspect-[16/6]"
           >
@@ -133,20 +164,23 @@ const HeaderImageSlider = () => {
       </div>
 
       {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-        {sliderData.map((_: any, index: number) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`h-3 w-3 rounded-full transition-all duration-300 border border-white ${
-              currentSlide === index
-                ? "bg-[#4fbf8b] scale-125 shadow-md"
-                : "bg-white/60 hover:bg-white"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          ></button>
-        ))}
-      </div>
+      {hasMultipleSlides && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setCurrentSlide(index)}
+              className={`h-3 w-3 rounded-full transition-all duration-300 border border-white ${
+                currentSlide === index
+                  ? "bg-[#4fbf8b] scale-125 shadow-md"
+                  : "bg-white/60 hover:bg-white"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
