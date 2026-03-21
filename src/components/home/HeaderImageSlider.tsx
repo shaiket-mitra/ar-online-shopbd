@@ -99,7 +99,7 @@ const HeaderImageSlider = () => {
   }, [hasMultipleSlides, nextSlide, prevSlide]);
 
   // Loading state
-  if (!sliderData) {
+  if (isLoading) {
     return <LoadingSpinner />;
   }
 
