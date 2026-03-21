@@ -16,13 +16,12 @@ const AUTO_PLAY_INTERVAL = 5000;
 const SWIPE_THRESHOLD = 50;
 
 const HeaderImageSlider = () => {
-  const { sliderData } = useAuth();
+  const { sliderData, loading } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef(0);
 
   const slides: Slide[] = Array.isArray(sliderData) ? sliderData : [];
-  const isLoading = sliderData === undefined || sliderData === null;
   const hasSlides = slides.length > 0;
   const hasMultipleSlides = slides.length > 1;
 
@@ -36,14 +35,17 @@ const HeaderImageSlider = () => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   }, [hasMultipleSlides, slides.length]);
 
-  // যদি slide count কমে যায় আর currentSlide out of range হয়ে যায়
   useEffect(() => {
-    if (currentSlide >= slides.length && slides.length > 0) {
+    if (slides.length === 0) {
+      setCurrentSlide(0);
+      return;
+    }
+
+    if (currentSlide >= slides.length) {
       setCurrentSlide(0);
     }
   }, [currentSlide, slides.length]);
 
-  // Autoplay
   useEffect(() => {
     if (!hasMultipleSlides) return;
 
@@ -54,7 +56,6 @@ const HeaderImageSlider = () => {
     return () => clearInterval(interval);
   }, [hasMultipleSlides, nextSlide]);
 
-  // Swipe / Drag Support
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider || !hasMultipleSlides) return;
@@ -98,48 +99,45 @@ const HeaderImageSlider = () => {
     };
   }, [hasMultipleSlides, nextSlide, prevSlide]);
 
-  // Loading state
-  if (isLoading) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
-  // Empty state
-  // if (!hasSlides) {
-  //   return (
-  //     <div className="text-center py-16 bg-pink-50 rounded-xl">
-  //       <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full text-pink-500 mb-4">
-  //         <svg
-  //           xmlns="http://www.w3.org/2000/svg"
-  //           className="h-8 w-8"
-  //           fill="none"
-  //           viewBox="0 0 24 24"
-  //           stroke="currentColor"
-  //         >
-  //           <path
-  //             strokeLinecap="round"
-  //             strokeLinejoin="round"
-  //             strokeWidth={1.5}
-  //             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-  //           />
-  //         </svg>
-  //       </div>
+  if (!hasSlides) {
+    return (
+      <div className="text-center py-16 bg-pink-50 rounded-xl">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full text-pink-500 mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
 
-  //       <h3 className="text-xl font-medium text-gray-700">
-  //         No Offers Available
-  //       </h3>
-  //       <p className="text-gray-500 mt-2">
-  //         We&apos;re currently baking new delicious products!
-  //       </p>
-  //     </div>
-  //   );
-  // }
+        <h3 className="text-xl font-medium text-gray-700">
+          No Offers Available
+        </h3>
+        <p className="text-gray-500 mt-2">
+          We&apos;re currently baking new delicious products!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
       ref={sliderRef}
       className="relative w-full max-w-screen-2xl mx-auto mt-6 overflow-hidden rounded-xl shadow-lg border border-gray-200 bg-white cursor-grab active:cursor-grabbing select-none"
     >
-      {/* Slides */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -163,15 +161,14 @@ const HeaderImageSlider = () => {
         ))}
       </div>
 
-      {/* Dots */}
       {hasMultipleSlides && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+        <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-3">
           {slides.map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setCurrentSlide(index)}
-              className={`h-3 w-3 rounded-full transition-all duration-300 border border-white ${
+              className={`h-3 w-3 rounded-full border border-white transition-all duration-300 ${
                 currentSlide === index
                   ? "bg-[#4fbf8b] scale-125 shadow-md"
                   : "bg-white/60 hover:bg-white"

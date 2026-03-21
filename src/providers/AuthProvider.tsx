@@ -8,29 +8,50 @@ interface Slide {
   productLink: string;
 }
 
-export const AuthContext = createContext<any>(null);
+interface AuthContextType {
+  sessionUser: any;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  sliderData: Slide[] | null;
+}
 
-export default function AuthProvider({ children }: any) {
+export const AuthContext = createContext<AuthContextType | null>(null);
+
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { data } = useSession();
   const sessionUser = data?.user;
+
   const [loading, setLoading] = useState(true);
-  const [sliderData, setSliderData] = useState<Slide[]>([]);
-  // Fetch slider data
+  const [sliderData, setSliderData] = useState<Slide[] | null>(null);
+
   useEffect(() => {
     const fetchSliders = async () => {
+      setLoading(true);
+
       try {
-        const { data } = await axios.get("/api/sliders/read");
-        if (data.success && Array.isArray(data.sliders)) {
-          setSliderData(data.sliders);
+        const res = await axios.get("/api/sliders/read");
+
+        if (res.data?.success && Array.isArray(res.data.sliders)) {
+          setSliderData(res.data.sliders);
+        } else {
+          setSliderData([]);
         }
       } catch (error) {
         console.error("Error fetching sliders:", error);
+        setSliderData([]);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchSliders();
   }, []);
 
-  const authInfo: any = {
+  const authInfo: AuthContextType = {
     sessionUser,
     loading,
     setLoading,
